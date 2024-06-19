@@ -35,7 +35,9 @@ jobs:
         credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
     - name: Build Docker image
-      run: docker build -t secretservice:latest .
+      run: |-
+        cd backend
+        docker build -t secretservice:latest .
 
     - name: Configure Docker for pushing
       run: gcloud auth configure-docker us-east1-docker.pkg.dev
