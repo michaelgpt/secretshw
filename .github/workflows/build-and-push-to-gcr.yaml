@@ -42,12 +42,9 @@ jobs:
     - name: Configure Docker for pushing
       run: gcloud auth configure-docker us-east1-docker.pkg.dev
 
-      # us-east1-docker.pkg.dev/hw-beta-centari-2024-06/secrethw/secretservice
-
-    # This deploys under 2 tags. One is `latest` and the other one is the last commit's SHA
     - name: Deploy to GCP Artifact Registry
       run: |-
-        docker tag secretservice:latest us-east1-docker.pkg.dev/${{ env.PROJECT_ID }}/secrethw/secretservice:latest
-        docker tag secretservice:latest us-east1-docker.pkg.dev/${{ env.PROJECT_ID }}/secrethw/secretservice:${{ github.sha }}
-        docker push us-east1-docker.pkg.dev/${{ env.PROJECT_ID }}/secrethw/secretservice:latest
-        docker push us-east1-docker.pkg.dev/${{ env.PROJECT_ID }}/secrethw/secretservice:${{ github.sha }}
+        docker tag secretservice:latest ${{env.GAR_HOSTNAME}}/secretservice:latest
+        docker tag secretservice:latest ${{env.GAR_HOSTNAME}}/secretservice:${{ github.sha }}
+        docker push ${{env.GAR_HOSTNAME}}/secretservice:latest
+        docker push ${{env.GAR_HOSTNAME}}/secrethw/secretservice:${{ github.sha }}
