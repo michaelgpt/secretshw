@@ -1,0 +1,4 @@
+**/.terraform/
+
+# Binaries should not be checked in
+backend/secretservice
