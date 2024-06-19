@@ -1,6 +1,6 @@
 module secretservice
 
-go 1.21
+go 1.21.4
 
 require (
 	github.com/spacemonkeygo/monkit/v3 v3.0.23
