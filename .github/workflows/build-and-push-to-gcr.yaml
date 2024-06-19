@@ -47,4 +47,4 @@ jobs:
         docker tag secretservice:latest ${{env.GAR_HOSTNAME}}/secretservice:latest
         docker tag secretservice:latest ${{env.GAR_HOSTNAME}}/secretservice:${{ github.sha }}
         docker push ${{env.GAR_HOSTNAME}}/secretservice:latest
-        docker push ${{env.GAR_HOSTNAME}}/secrethw/secretservice:${{ github.sha }}
+        docker push ${{env.GAR_HOSTNAME}}/secretservice:${{ github.sha }}
