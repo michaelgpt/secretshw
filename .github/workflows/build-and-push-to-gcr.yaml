@@ -11,7 +11,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCR_HOSTNAME: gcr.io
+  GAR_HOSTNAME: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/secrethw
 
 jobs:
   build-and-push:
@@ -37,6 +37,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ env.GCR_HOSTNAME }}/${{ env.PROJECT_ID }}/secretservice:latest
+        tags: ${{ env.GAR_HOSTNAME }}/secretservice:latest
         file: ./backend/Dockerfile
         context: ./backend
