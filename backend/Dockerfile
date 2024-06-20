@@ -1,4 +1,4 @@
-FROM golang:1.21 as builder
+FROM golang:1.21
 
 WORKDIR /app
 
@@ -7,15 +7,8 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -v -o secretservice
+RUN CGO_ENABLED=0 GOOS=linux go build -o /secretservice
 
-# Start new stage from scratch
-FROM alpine:latest  
+EXPOSE 8080
 
-WORKDIR /root/
-
-COPY --from=builder /app/secretservice /app/secretservice
-
-CMD ["/app/secretservice", "--secret", "something-super-secret", "--debug.addr", "localhost:7070"]
-
-EXPOSE 80 7070
+CMD ["/secretservice", "--secret", "something-super-secret", "--debug.addr", "localhost:7070"]
