@@ -86,6 +86,10 @@ func (s *Service) serveHTTP(ctx context.Context, w http.ResponseWriter, r *http.
 		return s.Encrypt(ctx, w, r)
 	case "/decrypt":
 		return s.Decrypt(ctx, w, r)
+	case "/healthcheck": // Add this case for the healthcheck endpoint
+		w.WriteHeader(http.StatusOK)   // Send a 200 OK status
+		_, err = fmt.Fprintln(w, "OK") // Optionally send a response body
+		return errs.Wrap(err)
 	}
 
 	return ErrInvalidOp.New("%q", r.URL.Path)
