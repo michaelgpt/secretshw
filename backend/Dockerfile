@@ -1,20 +1,21 @@
 FROM golang:1.21 as builder
 
 WORKDIR /app
-COPY go.mod go.sum ./
+
+COPY go.* ./
 RUN go mod download
 
-COPY . .
+COPY . ./
 
-RUN go build -o secretservice .
+RUN go build -v -o secretservice
 
 # Start new stage from scratch
 FROM alpine:latest  
 
 WORKDIR /root/
 
-COPY --from=builder /app/secretservice .
+COPY --from=builder /app/secretservice /app/secretservice
 
-CMD ["./secretservice -secret something-super-secret --debug.addr localhost:7070"]
+CMD ["/app/secretservice -secret something-super-secret --debug.addr localhost:7070"]
 
 EXPOSE 80 7070
