@@ -15,6 +15,6 @@ WORKDIR /root/
 
 COPY --from=builder /app/secretservice .
 
-CMD ["./secretservice", "--secret", "something-super-secret", "--debug.addr", ":7070"]
+CMD ["./secretservice -secret something-super-secret --debug.addr localhost:7070"]
 
 EXPOSE 80 7070

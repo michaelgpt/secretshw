@@ -1,4 +1,4 @@
-# .github/workflows/build-and-push-to-gcr.yaml
+# .github/workflows/build-and-push-to-gar.yaml
 name: Build and Push to GCR
 
 on:
