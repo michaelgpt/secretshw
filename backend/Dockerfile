@@ -11,4 +11,4 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /secretservice
 
 EXPOSE 8080
 
-CMD ["/secretservice", "--secret", "something-super-secret", "--debug.addr", "localhost:7070"]
+CMD ["/secretservice", "--secret", "something-super-secret", "--debug.addr", "0.0.0.0:7070"]
