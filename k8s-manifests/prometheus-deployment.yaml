@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  labels:
+    name: prometheus-server
+spec:
+  selector:
+    name: prometheus-server
+  ports:
+  - protocol: TCP
+    port: 9090
+    targetPort: 9090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: prometheus-server
+  template:
+    metadata:
+      labels:
+        name: prometheus-server
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        args:
+        - "--config.file=/etc/prometheus/prometheus.yml"
+        - "--storage.tsdb.path=/prometheus/"
+        - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+        - "--web.console.templates=/usr/share/prometheus/consoles"
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: prometheus-config-volume
+          mountPath: /etc/prometheus
+        - name: prometheus-storage-volume
+          mountPath: /prometheus
+      volumes:
+      - name: prometheus-config-volume
+        configMap:
+          name: prometheus-config
+      - name: prometheus-storage-volume
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: alertmanager
+  template:
+    metadata:
+      labels:
+        name: alertmanager
+    spec:
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager
+        args:
+        - "--config.file=/etc/alertmanager/config.yml"
+        - "--storage.path=/alertmanager"
+        ports:
+        - containerPort: 9093
+        volumeMounts:
+        - name: alertmanager-config-volume
+          mountPath: /etc/alertmanager
+      volumes:
+      - name: alertmanager-config-volume
+        configMap:
+          name: alertmanager-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+spec:
+  selector:
+    name: alertmanager
+  ports:
+  - protocol: TCP
+    port: 9093
+    targetPort: 9093

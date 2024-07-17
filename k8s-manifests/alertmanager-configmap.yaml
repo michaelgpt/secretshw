@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+data:
+  config.yml: |
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: 'webhook_receiver'
+    receivers:
+    - name: 'webhook_receiver'
+      webhook_configs:
+      - url: 'https://2a77-66-103-5-255.ngrok-free.app'

@@ -17,15 +17,19 @@ module "gke" {
   identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
   deletion_protection = false
 
+  monitoring_enable_managed_prometheus = false
+
+  grant_registry_access = true
+
   node_pools = [
     {
-      name         = "asd-node-pool"
+      name         = "secretservice-node-pool"
       autoscaling  = true
       node_count   = 3
       min_count    = 1
-      max_count    = 50
+      max_count    = 5
       auto_upgrade = true
-      machine_type = "e2-micro"
+      machine_type = "e2-medium"
     },
   ]
 
